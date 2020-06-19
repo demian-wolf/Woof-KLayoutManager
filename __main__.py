@@ -17,9 +17,9 @@ import keyboard
 
 LANGS = itertools.cycle(("us", "ru", "ua", "cz qwerty"))
 
-BG = "grey"
+BG = "#444444"
 FG = "black"
-FONT = "Arial 18"
+FONT = "Arial 14 bold"
 
 
 class DraggableToolbar(tk.Tk):
@@ -96,11 +96,11 @@ class MainGUI(DraggableToolbar):
         keyboard.add_hotkey('alt+shift', self.switch_layout)
 
         self.lang_label = tk.Label(self, bg=BG, fg=FG, font=FONT)
-        self.lang_label.pack()
+        self.lang_label.place(relx=0.5, rely=0.5, anchor="c")
 
         self.overrideredirect(True)
 
-        self.geometry("25x35")
+        self.geometry("25x30")
         self.update()
         self.geometry(
             "+%s+%s" % (self.winfo_screenwidth() - self.winfo_width(), self.winfo_screenheight() - self.winfo_height()))
