@@ -11,7 +11,6 @@ import tkinter.messagebox as tk_msgbox
 import _tkinter
 import subprocess
 import itertools
-import os
 
 import keyboard
 
@@ -52,6 +51,7 @@ class DraggableToolbar(tk.Tk):
         else:
             self.geometry(f"+{x}+{bottom_point}")
 
+
 class OKCancelBox(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -62,13 +62,14 @@ class OKCancelBox(tk.Frame):
         self.cancel_btn.pack(side="right", padx=4)
         self.ok_btn.pack(side="right", padx=4)
 
+
 class SettingsGUI(tk.Toplevel):
     def __init__(self):
         super().__init__()
 
         self.title("Settings - Woof-KLayoutManager")
         self.resizable(False, False)
-        
+
         self.tabs_nb = ttk.Notebook(self)
         self.tabs_nb.pack(fill="both", expand="yes")
 
@@ -85,6 +86,7 @@ class SettingsGUI(tk.Toplevel):
 
         self.wait_window()
 
+
 class MainGUI(DraggableToolbar):
     def __init__(self):
         super().__init__()
@@ -95,12 +97,13 @@ class MainGUI(DraggableToolbar):
 
         self.lang_label = tk.Label(self, bg=BG, fg=FG, font=FONT)
         self.lang_label.pack()
-        
+
         self.overrideredirect(True)
 
         self.geometry("25x35")
         self.update()
-        self.geometry("+%s+%s" % (self.winfo_screenwidth() - self.winfo_width(), self.winfo_screenheight() - self.winfo_height()))
+        self.geometry(
+            "+%s+%s" % (self.winfo_screenwidth() - self.winfo_width(), self.winfo_screenheight() - self.winfo_height()))
         self.update()
 
         self.after(0, self.switch_layout)  # switch to the default keyboard layout
@@ -109,13 +112,13 @@ class MainGUI(DraggableToolbar):
         self.right_click_menu = tk.Menu(self, tearoff=False)
         self.right_click_menu.add_command(label="Settings...", command=self.open_settings)
         self.right_click_menu.add_command(label="About...", command=lambda: tk_msgbox.showinfo("About...",
-                                                                                                ("Woof-KLayoutManager\n"
-                                                                                                 "(C) Demian Volkov 2020\n\n"
-                                                                                                 "Extension for Puppy Linux's JWM desktop environment for switching between different keyboard layouts.\n\n"
-                                                                                                 "Thank you for using my program!")))
+                                                                                               ("Woof-KLayoutManager\n"
+                                                                                                "(C) Demian Volkov 2020\n\n"
+                                                                                                "Extension for Puppy Linux's JWM desktop environment for switching between different keyboard layouts.\n\n"
+                                                                                                "Thank you for using my program!")))
         self.right_click_menu.add_command(label="Exit...", command=self.destroy)
         self.bind("<Button-3>", self.show_right_click_menu)
-        
+
     def switch_layout(self, lang=None):
         if not lang:
             lang = next(LANGS)
@@ -133,8 +136,10 @@ class MainGUI(DraggableToolbar):
                         pass
                     else:
                         self.after(1000, lambda secs=secs - 1: skip_countdown(secs))
+
             menu = tk.Menu(self, tearoff=False)
-            menu.add_command(label="While switching keyboard layout to \"%s\", an error occurred:" % lang, state="disabled")
+            menu.add_command(label="While switching keyboard layout to \"%s\", an error occurred:" % lang,
+                             state="disabled")
             menu.add_command(label="Details: %s (%s)" % (details.__class__.__name__, details), state="disabled")
             menu.add_command(label="Retry?", command=lambda lang=lang: self.switch_layout(lang))
             menu.add_command(label="Skip? (automatically in 10 seconds)", command=menu.destroy)
@@ -151,7 +156,7 @@ class MainGUI(DraggableToolbar):
         try:
             self.right_click_menu.tk_popup(event.x_root, event.y_root, 0)
         finally:
-           self.right_click_menu.grab_release()
+            self.right_click_menu.grab_release()
 
     def restart(self):
         print("restarting")
@@ -159,6 +164,7 @@ class MainGUI(DraggableToolbar):
     def open_settings(self):
         SettingsGUI()
         self.restart()
+
 
 if __name__ == "__main__":
     MainGUI().mainloop()
